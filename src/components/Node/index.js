@@ -3,6 +3,14 @@ import { Card, Grid } from "@mui/material";
 import LinearProgress, { linearProgressClasses } from "@mui/material/LinearProgress";
 import { numFormatter, getColorAndStatus } from "../../utils";
 
+const getWindowDimensions = () => {
+	const { innerWidth: width, innerHeight: height } = window;
+	return {
+		width,
+		height,
+	};
+};
+
 class Node extends React.Component {
 	constructor(props) {
 		super(props);
@@ -19,10 +27,11 @@ class Node extends React.Component {
 	}
 
 	render() {
+		const { height, width } = getWindowDimensions();
 		const { name, total, target, children } = this.props;
 		const { toRenderChildren } = this.state;
 		const offset = this.props.offset || 20;
-		const offsetLeft = this.props.offsetLeft || 800;
+		const offsetLeft = this.props.offsetLeft || (width - 350) / 2;
 		const _total = numFormatter(total);
 		const _target = numFormatter(target);
 		const percentage = Math.round((total / target) * 100);
