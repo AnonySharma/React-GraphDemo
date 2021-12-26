@@ -22,7 +22,6 @@ class Graph extends React.Component {
 		const { data } = this.state;
 		return (
 			<div>
-				{/* <Node name="TATA STEEL" total="2000000000" target="4000000000" /> */}
 				{data && (
 					<Node key={data.name} name={data.name} total={data.total} target={data.target} children={data.children} />
 				)}
