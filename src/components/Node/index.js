@@ -2,7 +2,7 @@ import React from "react";
 import "./style.css";
 
 import LinearProgress, { linearProgressClasses } from "@mui/material/LinearProgress";
-import { Card, Grid } from "@mui/material";
+import { Badge, Card, Grid } from "@mui/material";
 import { CSSTransition } from "react-transition-group";
 
 import { numFormatter, getColorAndStatus } from "../../utils";
@@ -96,73 +96,75 @@ class Node extends React.Component {
 		return (
 			<>
 				<div style={{ position: "absolute", top: `${offset}px`, left: `${offsetLeft}px` }}>
-					<Card
-						sx={{ padding: "20px", width: "350px", cursor: "pointer" }}
-						onClick={this.toggleChildren}
-						onContextMenu={(e) => {
-							e.preventDefault();
-							deleteNode();
-						}}
-					>
-						<Grid container>
-							<Grid item xs={8}>
-								<b style={{ fontWeight: 500 }}>
-									<span>{name}</span>
-								</b>
-							</Grid>
-							<Grid item xs={4}>
-								<b style={{ fontWeight: 900 }}>
-									<span>{percentage + "% "}</span>
-								</b>
-								<span>complete</span>
-							</Grid>
-							<Grid item xs={12}>
-								<div style={{ height: "40px" }}></div>
-							</Grid>
-							<Grid item xs={8}>
-								<Grid item xs={12}>
-									<b>
-										<span>{"Total Sales - " + _total}</span>
+					<Badge color="info" invisible={children.length === 0} badgeContent={"+" + children.length}>
+						<Card
+							sx={{ padding: "20px", width: "350px", cursor: "pointer" }}
+							onClick={this.toggleChildren}
+							onContextMenu={(e) => {
+								e.preventDefault();
+								deleteNode();
+							}}
+						>
+							<Grid container>
+								<Grid item xs={8}>
+									<b style={{ fontWeight: 500 }}>
+										<span>{name}</span>
 									</b>
 								</Grid>
-								<Grid item xs={12}>
-									<b>
-										<span>{"Target Sales - " + _target}</span>
+								<Grid item xs={4}>
+									<b style={{ fontWeight: 900 }}>
+										<span>{percentage + "% "}</span>
 									</b>
+									<span>complete</span>
 								</Grid>
-							</Grid>
-							<Grid item xs={4}>
-								<div
-									style={{
-										color: color.primary,
-										backgroundColor: color.secondary,
-										padding: "5px",
-										textAlign: "center",
-										borderRadius: "5px",
-									}}
-								>
-									<b>{color.status}</b>
-								</div>
-							</Grid>
-							<Grid item xs={12} sx={{ marginTop: "10px", color: color.primary }}>
-								<LinearProgress
-									variant="determinate"
-									value={percentage}
-									color="inherit"
-									sx={{
-										height: 15,
-										borderRadius: 10,
-										// [`&.${linearProgressClasses.bar}`]: {
-										// 	color: color.primary,
-										// },
-										[`&.${linearProgressClasses.colorPrimary}`]: {
+								<Grid item xs={12}>
+									<div style={{ height: "40px" }}></div>
+								</Grid>
+								<Grid item xs={8}>
+									<Grid item xs={12}>
+										<b>
+											<span>{"Total Sales - " + _total}</span>
+										</b>
+									</Grid>
+									<Grid item xs={12}>
+										<b>
+											<span>{"Target Sales - " + _target}</span>
+										</b>
+									</Grid>
+								</Grid>
+								<Grid item xs={4}>
+									<div
+										style={{
+											color: color.primary,
 											backgroundColor: color.secondary,
-										},
-									}}
-								/>
+											padding: "5px",
+											textAlign: "center",
+											borderRadius: "5px",
+										}}
+									>
+										<b>{color.status}</b>
+									</div>
+								</Grid>
+								<Grid item xs={12} sx={{ marginTop: "10px", color: color.primary }}>
+									<LinearProgress
+										variant="determinate"
+										value={percentage}
+										color="inherit"
+										sx={{
+											height: 15,
+											borderRadius: 10,
+											// [`&.${linearProgressClasses.bar}`]: {
+											// 	color: color.primary,
+											// },
+											[`&.${linearProgressClasses.colorPrimary}`]: {
+												backgroundColor: color.secondary,
+											},
+										}}
+									/>
+								</Grid>
 							</Grid>
-						</Grid>
-					</Card>
+						</Card>
+					</Badge>
 				</div>
 				<CSSTransition in={showChildren} timeout={200} classNames="new-nodes" unmountOnExit>
 					<div>
