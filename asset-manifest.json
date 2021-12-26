@@ -1,0 +1,15 @@
+{
+  "files": {
+    "main.css": "/react-tree-visualizer/static/css/main.c0d02fd3.css",
+    "main.js": "/react-tree-visualizer/static/js/main.e95fa8d8.js",
+    "static/js/787.03d87c09.chunk.js": "/react-tree-visualizer/static/js/787.03d87c09.chunk.js",
+    "index.html": "/react-tree-visualizer/index.html",
+    "main.c0d02fd3.css.map": "/react-tree-visualizer/static/css/main.c0d02fd3.css.map",
+    "main.e95fa8d8.js.map": "/react-tree-visualizer/static/js/main.e95fa8d8.js.map",
+    "787.03d87c09.chunk.js.map": "/react-tree-visualizer/static/js/787.03d87c09.chunk.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.c0d02fd3.css",
+    "static/js/main.e95fa8d8.js"
+  ]
+}
