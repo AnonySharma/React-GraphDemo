@@ -2,6 +2,8 @@ import React from "react";
 import { Card, Grid } from "@mui/material";
 import LinearProgress, { linearProgressClasses } from "@mui/material/LinearProgress";
 import { numFormatter, getColorAndStatus } from "../../utils";
+import { CSSTransition } from "react-transition-group";
+import "./style.css";
 
 const getWindowDimensions = () => {
 	const { innerWidth: width, innerHeight: height } = window;
@@ -16,6 +18,7 @@ class Node extends React.Component {
 		super(props);
 		this.state = {
 			toRenderChildren: false,
+			inProp: false,
 		};
 		this.toggleChildren = this.toggleChildren.bind(this);
 	}
@@ -23,13 +26,14 @@ class Node extends React.Component {
 	toggleChildren() {
 		this.setState({
 			toRenderChildren: !this.state.toRenderChildren,
+			inProp: !this.state.inProp,
 		});
 	}
 
 	render() {
-		const { height, width } = getWindowDimensions();
+		const { width } = getWindowDimensions();
 		const { name, total, target, children } = this.props;
-		const { toRenderChildren } = this.state;
+		const { toRenderChildren, inProp } = this.state;
 		const offset = this.props.offset || 20;
 		const offsetLeft = this.props.offsetLeft || (width - 350) / 2;
 		const _total = numFormatter(total);
@@ -101,21 +105,25 @@ class Node extends React.Component {
 						</Grid>
 					</Card>
 				</div>
-				{toRenderChildren &&
-					children &&
-					children.map((child, index) => {
-						return (
-							<Node
-								key={index}
-								offset={offset + 200}
-								offsetLeft={offsetLeft - (400 * children.length) / 2 + 400 * index + 400 / 2}
-								name={child.name}
-								total={child.total}
-								target={child.target}
-								children={child.children}
-							/>
-						);
-					})}
+				<CSSTransition in={inProp} timeout={200} classNames="new-nodes" unmountOnExit>
+					<div>
+						{toRenderChildren &&
+							children &&
+							children.map((child, index) => {
+								return (
+									<Node
+										key={index}
+										offset={offset + 200}
+										offsetLeft={offsetLeft - (400 * children.length) / 2 + 400 * index + 400 / 2}
+										name={child.name}
+										total={child.total}
+										target={child.target}
+										children={child.children}
+									/>
+								);
+							})}
+					</div>
+				</CSSTransition>
 			</>
 		);
 	}
