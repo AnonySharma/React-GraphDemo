@@ -15,39 +15,77 @@ const getWindowDimensions = () => {
 	};
 };
 
+const getRandomElementNotPresentInList = (arr) => {
+	let rand = Math.floor(Math.random() * 10000000);
+	while (arr.includes(rand)) {
+		rand = Math.floor(Math.random() * 10000000);
+	}
+	return rand;
+};
+
 class Node extends React.Component {
 	constructor(props) {
 		super(props);
+		let tempKeys = [];
+		for (let i = 0; i < props.children.length; i++) tempKeys.push(getRandomElementNotPresentInList(tempKeys).toString());
+
 		this.state = {
 			children: [],
-			showChildren: false,
+			keys: tempKeys,
 		};
-		this.toggleChildren = this.toggleChildren.bind(this);
-		this.deleteNode = this.deleteNode.bind(this);
 	}
 
 	componentDidMount() {
+		const { children, showChildren } = this.props;
 		this.setState({
-			children: this.props.children,
+			children,
+			showChildren: showChildren || false,
+			showChildrensChildren: Array(children.length).fill(false),
 		});
 	}
 
-	toggleChildren() {
-		this.setState({
-			showChildren: !this.state.showChildren,
-		});
-	}
+	toggleChildren = () => {
+		const { children } = this.state;
+		if (children?.length === 0) return;
 
-	deleteNode(index) {
+		const { closeOthers, index } = this.props;
+		const isShowing = this.state.showChildren;
+
+		this.setState({
+			showChildren: !isShowing,
+		});
+
+		if (closeOthers) {
+			closeOthers(index, !isShowing);
+		}
+	};
+
+	closeOthers = (index, isOpen) => {
+		const { children } = this.state;
+		const temp = Array(children.length)
+			.fill(false)
+			.map((_, i) => (i === index ? isOpen : false));
+
+		this.setState({
+			showChildrensChildren: temp,
+			keys: this.state.keys.map((_, i) =>
+				i !== index ? getRandomElementNotPresentInList(this.state.keys) : this.state.keys[i]
+			),
+		});
+
+		console.log(temp);
+	};
+
+	deleteNode = (index) => {
 		this.setState({
 			children: this.state.children.filter((child, i) => i !== index),
 		});
-	}
+	};
 
 	render() {
 		const { width } = getWindowDimensions();
 		const { name, total, target, deleteNode } = this.props;
-		const { children, showChildren } = this.state;
+		const { keys, children, showChildren, showChildrensChildren } = this.state;
 		const offset = this.props.offset || 20;
 		const offsetLeft = this.props.offsetLeft || (width - 350) / 2;
 		const _total = numFormatter(total);
@@ -133,13 +171,16 @@ class Node extends React.Component {
 							children.map((child, index) => {
 								return (
 									<Node
-										key={index}
+										key={keys[index]}
+										index={index}
 										offset={offset + 200}
 										offsetLeft={offsetLeft - (400 * children.length) / 2 + 400 * index + 400 / 2}
 										name={child.name}
 										total={child.total}
 										target={child.target}
+										closeOthers={this.closeOthers}
 										children={child.children}
+										showChildren={showChildrensChildren[index]}
 										deleteNode={() => this.deleteNode(index)}
 									/>
 								);
