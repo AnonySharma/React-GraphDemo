@@ -2,6 +2,10 @@
 
 ![Demo](https://raw.githubusercontent.com/AnonySharma/React-TreeDemo/master/assets/demo.gif)
 
+-   To show children of a node, click on the node.
+-   To hide children of a node, click on the node again.
+-   To delete a node, right click it.
+
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
 ## Available Scripts
